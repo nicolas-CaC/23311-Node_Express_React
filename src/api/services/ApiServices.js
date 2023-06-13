@@ -60,4 +60,15 @@ export class ApiServices {
         const confirm = await this.#verifyHash('verify', pass, hashFromDB)
         return confirm
     }
+
+    getProduct = async (id) => ({ id, nombre: 'Jugo', precio: 200 })
+
+    postProduct = async ({ nombre, categoria, stock, precio }) => {
+        console.log('Nombre:', nombre)
+        console.log('categoria:', categoria)
+        console.log('stock:', stock)
+        console.log('precio:', precio)
+        return true
+    }
+
 }

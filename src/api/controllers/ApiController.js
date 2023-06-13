@@ -32,5 +32,30 @@ export class ApiController {
 
     errorController = (req, res) => res.redirect('/')
 
+    // Controllers: Productos
 
+    getProducts = async (req, res) => {
+        console.clear();
+        console.log('Recibido')
+        res.json({ x: 'Controller' })
+
+    }
+
+    getProduct = async (req, res) => {
+        const { id } = req.params
+        const product = await this.services.getProduct(id)
+        res.json(product)
+    }
+
+    postProduct = async (req, res) => {
+
+        // const { body, query, params } = req
+        const { body } = req
+
+        const result = await this.services.postProduct(body)
+
+        result
+            ? res.redirect('/exito.html')
+            : res.redirect('/')
+    }
 }

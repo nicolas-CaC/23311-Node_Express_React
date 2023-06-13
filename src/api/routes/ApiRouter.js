@@ -22,8 +22,9 @@ export class ApiRouter {
             .put('/api/pass', this.controller.putController)
             .patch('/api/pass', this.controller.patchController)
 
-            .get('/api/productos', (_, res) => res.json({ holi: 'apiget' }))
-            .post('/api/productos', (_, res) => res.json({ holi: 'apipost' }))
+            .get('/api/productos', this.controller.getProducts)
+            .get('/api/productos/:id', this.controller.getProduct)
+            .post('/api/productos', this.controller.postProduct)
             .put('/api/productos', (_, res) => res.json({ holi: 'apiput' }))
             .delete('/api/productos', (_, res) => res.json({ holi: 'apidel' }))
 

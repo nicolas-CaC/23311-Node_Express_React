@@ -1,11 +1,12 @@
 import bcrypt from 'bcryptjs'
 import { config } from '../config/config.js';
+import { ApiRepository } from '../databases/repositories/ApiRepository.js';
 
 export class ApiServices {
 
     static instance = null;
 
-    // repository
+    repository = ApiRepository.get
 
     static get get() {
         if (!ApiServices.instance)
@@ -34,18 +35,9 @@ export class ApiServices {
 
     #verifyHash = async (key, value, hashFromDB) => {
         let res;
-
-        try {
-            res = { [key]: await bcrypt.compare(value, hashFromDB) }
-        }
-
-        catch (e) {
-            res = { error: 'Hubo problemas al verificar la contraseña' }
-        }
-
-        finally {
-            return res
-        }
+        try { res = { [key]: await bcrypt.compare(value, hashFromDB) } }
+        catch (e) { res = { error: 'Hubo problemas al verificar la contraseña' } }
+        finally { return res }
     }
 
     // Servicios: Pass
@@ -61,14 +53,25 @@ export class ApiServices {
         return confirm
     }
 
-    getProduct = async (id) => ({ id, nombre: 'Jugo', precio: 200 })
+    // Metodos Productos
 
-    postProduct = async ({ nombre, categoria, stock, precio }) => {
-        console.log('Nombre:', nombre)
-        console.log('categoria:', categoria)
-        console.log('stock:', stock)
-        console.log('precio:', precio)
-        return true
+    getProducts = async () =>
+        await this.repository.getProducts()
+
+    getProduct = async (id) =>
+        await this.repository.getProduct(id)
+
+    postProduct = async (product) => {
+        product.stock = parseInt(product.stock) > 0
+        const result = await this.repository.postProduct(product)
+        return result
     }
+
+    modifyProduct = async (id, product) => {
+
+    }
+
+    deleteProduct = async (id) =>
+        await this.repository.deleteProduct(id)
 
 }

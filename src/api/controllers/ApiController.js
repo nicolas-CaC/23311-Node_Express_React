@@ -35,27 +35,25 @@ export class ApiController {
     // Controllers: Productos
 
     getProducts = async (req, res) => {
-        console.clear();
-        console.log('Recibido')
-        res.json({ x: 'Controller' })
+        const products = await this.services.getProducts()
+        res.json(products)
 
     }
 
     getProduct = async (req, res) => {
-        const { id } = req.params
-        const product = await this.services.getProduct(id)
-        res.json(product)
+        const product = await this.services.getProduct(req.params.id)
+        res.json({ product })
     }
 
     postProduct = async (req, res) => {
-
-        // const { body, query, params } = req
-        const { body } = req
-
-        const result = await this.services.postProduct(body)
-
+        const result = await this.services.postProduct(req.body)
+        console.log(result)
         result
             ? res.redirect('/exito.html')
-            : res.redirect('/')
+            : res.status(404)
     }
+
+    modifyProduct = () => { }
+
+    deleteProduct = () => { }
 }
